@@ -1,0 +1,113 @@
+li { list-style: none;}
+
+.layout {
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -ms-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s;
+}
+
+.chat {
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    left: 10%;
+    bottom: 10%;
+    border: 20px solid #ccc;
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 6px;
+}
+
+.chat-box {
+    height: 100%;
+    padding: 20px 20px 60px 20px;
+}
+
+/* people list */
+.chat-people-list {
+    position: absolute;
+    top: 20px;
+    bottom: 0;
+    width: 200px;
+}
+
+.chat-people-list .list-group-item .glyphicon {
+    margin-right: 5px;
+}
+
+/* chat list */
+.chat-box-wrap {
+    overflow: auto;
+    height: 100%;
+    margin-left: 210px;
+}
+
+.chat-box-list {
+    padding: 0 10px 0 0;
+}
+
+.chat-box-list li {
+}
+
+.chat-box-list li small {
+    margin-left: 10px;
+}
+
+.chat-input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    padding: 10px;
+    background: #f1f1f1;
+}
+
+.chat-input .text-wrap {
+    float:left;
+    width: 100%;
+    /*margin: 0 100px 0 0;*/
+}
+
+.chat-input .text-inner {
+    margin-right: 110px;
+}
+
+.chat-input .btn {
+    float: left;
+    width: 100px;
+    margin-left: -100px;
+}
+
+/* float window */
+.chat-floatwindow {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+    z-index: 100;
+}
+
+.chat-floatwindow .btnWrap {
+    margin-top: 10px;
+}
+
+.chat-floatwindow .btn {
+    padding: 3px 20px;
+    margin-left: 5px;
+}
+
+/* ------------------------------------ */
+.blur {
+    filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
+
+    -webkit-filter: blur(2px); /* Chrome, Opera */
+    -moz-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false); /* IE6~IE9 */
+    opacity: 0.3;
+}
