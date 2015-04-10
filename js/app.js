@@ -88,6 +88,8 @@ chat.prototype.user = {
 
     readUser: function () {
         var localUserName = localStorage.chatUserName;
+        //  update
+        chat.prototype.user.updateUserName(localUserName);
 
         if (localUserName) {
             chat.prototype.user.curUser = localUserName;
@@ -141,6 +143,7 @@ chat.prototype.user = {
     updateUserName: function (userName) {
         localStorage.chatUserName = userName;
         chat.prototype.user.curUser = localStorage.chatUserName;
+        $('.chat-people-list .list-group-item.active span').text(chat.prototype.user.curUser);
     },
 
     changeUserName: function (){
@@ -251,7 +254,7 @@ chat.prototype.message = {
     },
 
     scrollMessageListToBottom: function () {
-        $('.chat-box-wrap').animate({scrollTop: $('.chat-box-list').outerHeight() + 'px'}, 200);
+        $('.chat-box-wrap').stop().animate({scrollTop: $('.chat-box-list').outerHeight() + 'px'}, 200);
     },
 
     clearMessage: function () {
