@@ -112,3 +112,26 @@ li { list-style: none;}
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false); /* IE6~IE9 */
     opacity: 0.3;
 }
+
+/* ------------------------------------ */
+@media screen and (max-width: 655px) {
+    .chat {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border: none;
+    }
+
+    .chat-people-list {
+        display: none;
+    }
+
+    .chat-box-wrap {
+        margin-left: 0;
+    }
+
+    .chat-box-list {
+        padding-right: 0;
+    }
+}

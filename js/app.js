@@ -61,7 +61,7 @@ chat.prototype.init = function (){
     var userName = chat.prototype.user.readUser();
 
     //  focus text
-    $('#text')[0].focus();
+    chat.prototype.utils.textFocus();
 
     //  scroll to bottom
     chat.prototype.message.scrollMessageListToBottom();
@@ -118,11 +118,13 @@ chat.prototype.user = {
 
                     // close
                     chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                    chat.prototype.utils.textFocus();
                 });
 
                 //  cancel
                 thisWindow.find('.cancel').click(function (){
                     chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                    chat.prototype.utils.textFocus();
                 });
 
                 //  key helpful
@@ -167,11 +169,13 @@ chat.prototype.user = {
 
                 // close
                 chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                chat.prototype.utils.textFocus();
             });
 
             //  cancel
             thisWindow.find('.cancel').click(function (){
                 chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                chat.prototype.utils.textFocus();
             });
 
             //  key helpful
@@ -215,7 +219,8 @@ chat.prototype.message = {
         //  submit text
         $('#submitText').click(function (){
             that.pushTextToServer();
-            $('#text').val('').focus();
+            $('.chat-input .text').val('');
+            chat.prototype.utils.textFocus();
         });
 
         //  press enter to submit
@@ -269,6 +274,9 @@ chat.prototype.message = {
 
 //  utils, provides some helpful module
 chat.prototype.utils = {
+    textFocus: function (){
+        $('.chat-input .text')[0].focus();
+    },
     floatWindow: {
         inputWindow: {
             open: function (inputWindow, title, description, callback){
