@@ -44,10 +44,9 @@ chat.prototype.init = function (){
     //  read local message
     chat.prototype.message.readLocalMessage();
 
+    //  insert local message to page
     for (x in chat.prototype.message.messageList) {
-        // insert text to page
         chat.prototype.message.insertTextToChatPage(chat.prototype.message.messageList[x], chat.prototype.message.scrollMessageListToBottom);
-        //console.log('local create list');
     }
 
     //  init server
@@ -56,6 +55,20 @@ chat.prototype.init = function (){
     //  read user
     var userName = chat.prototype.user.readUser();
 
+    //  focus text
+    $('#text')[0].focus();
+
+    //  scroll to bottom
+    chat.prototype.message.scrollMessageListToBottom();
+
+    //  send message init
+    chat.prototype.message.submitInit();
+
+    //  delete local message
+    $('.clearMessage').click(function (){
+        chat.prototype.message.clearMessage();
+    });
+
     //  clear user
     $('.clearUser').click(function (){
         chat.prototype.user.clearUser();
@@ -63,18 +76,9 @@ chat.prototype.init = function (){
         console.log('success to clear local user.');
     });
 
-    //  scroll to bottom
-    chat.prototype.message.scrollMessageListToBottom();
-
-    //  focus text
-    $('#text')[0].focus();
-
-    //  send message init
-    chat.prototype.message.submitInit();
-
-    //  delete message
-    $('.clearMessage').click(function (){
-        chat.prototype.message.clearMessage();
+    //  change user name
+    $('.editName').click(function (){
+        chat.prototype.user.changeUserName();
     });
 };
 
@@ -86,28 +90,69 @@ chat.prototype.user = {
         var localUserName = localStorage.chatUserName;
 
         if (localUserName) {
-            userName = localUserName;
             chat.prototype.user.curUser = localUserName;
             $('.chat-people-list .list-group-item.active span').text(userName)
                 .siblings('i').removeClass('hide');
         } else {
             //  create new user
-            userName = '笨蛋不取名' + new String(new Date().getTime()).slice(-4, -1);
-            var ask = prompt('你叫什么名字?');
-            if (ask) {
-                userName = ask.replace(/ /g, '');
-                $('.chat-people-list .list-group-item.active span').text(userName)
-                    .siblings('i').removeClass('hide');
-            }
-            localStorage.chatUserName = userName;
-            chat.prototype.user.curUser = localStorage.chatUserName;
+            var userName = '笨蛋不取名' + new String(new Date().getTime()).slice(-4, -1);
+
+            chat.prototype.utils.floatWindow.inputWindow.open('.chat-floatwindow-input', '说说你的名字, 让大家认识你', '快点自豪的说出你的名字吧!', function (thisWindow){
+                //  confirm
+                thisWindow.find('.confirm').click(function (){
+                    //  get name from input
+                    var name = thisWindow.find('.text').val();
+                    if (name) {
+                        userName = name.replace(/ /g, '');
+                        $('.chat-people-list .list-group-item.active span').text(userName)
+                            .siblings('i').removeClass('hide');
+                    }
+
+                    // close
+                    chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                });
+
+                //  cancel
+                thisWindow.find('.cancel').click(function (){
+                    chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                });
+            });
+
+            //  update
+            chat.prototype.user.updateUserName(userName);
         }
 
         return chat.prototype.user.curUser;
     },
 
-    changeUserName: function (){
+    updateUserName: function (userName) {
+        localStorage.chatUserName = userName;
+        chat.prototype.user.curUser = localStorage.chatUserName;
+    },
 
+    changeUserName: function (){
+        chat.prototype.utils.floatWindow.inputWindow.open('.chat-floatwindow-input', '想改名字了啊? 好吧, 狼哥哥给你这个机会', '输入你的新名字, 改多了妈妈都会不认识你哦!', function (thisWindow){
+            //  confirm
+            thisWindow.find('.confirm').click(function (){
+                //  get userName from input
+                var userName = thisWindow.find('.text').val();
+                if (userName) {
+                    userName = userName.replace(/ /g, '');
+                    $('.chat-people-list .list-group-item.active span').text(userName)
+                        .siblings('i').removeClass('hide');
+                    //  update
+                    chat.prototype.user.updateUserName(userName);
+                }
+
+                // close
+                chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+            });
+
+            //  cancel
+            thisWindow.find('.cancel').click(function (){
+                chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+            });
+        });
     },
 
     clearUser: function () {
@@ -163,7 +208,6 @@ chat.prototype.message = {
                 .push(msg, function (err){
                     //  if success send to server
                     if (err == null) {
-                        chat.prototype.message.insertTextToChatPage(msg, chat.prototype.message.scrollMessageListToBottom);
                         console.log('Success to send message.');
                     }
                 });
@@ -181,11 +225,44 @@ chat.prototype.message = {
     },
 
     scrollMessageListToBottom: function () {
-        $('.chat-box-wrap').animate({scrollTop: 1000000000 + 'px'}, 200);
+        $('.chat-box-wrap').animate({scrollTop: $('.chat-box-list').outerHeight() + 'px'}, 200);
     },
 
     clearMessage: function () {
         localStorage.removeItem('chatMessageList');
     }
 };
+
+//  utils, provides some helpful module
+chat.prototype.utils = {
+    floatWindow: {
+        inputWindow: {
+            open: function (inputWindow, title, description, callback){
+                var inputWindow = $(inputWindow);
+                $('.layout').addClass('blur');
+
+                inputWindow.find('.panel-title span').text(title);
+                inputWindow.find('.text').attr('placeholder', description);
+
+                // pass current window in callback
+                if (callback) callback(inputWindow);
+                $(inputWindow).fadeIn();
+            },
+
+            close: function (inputWindow, callback){
+                var inputWindow = $(inputWindow);
+                $('.layout').removeClass('blur');
+
+                inputWindow.fadeOut(function (){
+                    // pass current window in callback
+                    if (callback) callback(inputWindow);
+                    inputWindow.find('.panel-title span').val('...');
+                    inputWindow.find('.text').attr('placeholder', '').val('');
+                });
+            }
+        }
+    }
+};
+
+
 

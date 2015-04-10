@@ -82,8 +82,9 @@ li { list-style: none;}
 
 /* float window */
 .chat-floatwindow {
-    position: fixed;
-    top: 100px;
+    display: none;
+    position: absolute;
+    top: 30%;
     left: 50%;
     width: 400px;
     margin-left: -200px;
