@@ -106,6 +106,7 @@ chat.prototype.user = {
                         userName = name.replace(/ /g, '');
                         $('.chat-people-list .list-group-item.active span').text(userName)
                             .siblings('i').removeClass('hide');
+                        chat.prototype.user.updateUserName(userName);
                     }
 
                     // close
@@ -115,6 +116,18 @@ chat.prototype.user = {
                 //  cancel
                 thisWindow.find('.cancel').click(function (){
                     chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
+                });
+
+                //  key helpful
+                $('.chat-floatwindow-input').keydown(function (e) {
+                    e.stopPropagation();
+                    //  press enter to continu
+                    if (e.keyCode == 13){
+                        $('.chat-floatwindow-input .confirm')[0].click();
+                    } else if (e.keyCode == 27) {
+                        //  press esc to continu
+                        $('.chat-floatwindow-input .cancel')[0].click();
+                    }
                 });
             });
 
@@ -152,6 +165,18 @@ chat.prototype.user = {
             thisWindow.find('.cancel').click(function (){
                 chat.prototype.utils.floatWindow.inputWindow.close('.chat-floatwindow-input');
             });
+
+            //  key helpful
+            $('.chat-floatwindow-input').keydown(function (e) {
+                e.stopPropagation();
+                //  press enter to continu
+                if (e.keyCode == 13){
+                    $('.chat-floatwindow-input .confirm')[0].click();
+                } else if (e.keyCode == 27) {
+                    //  press esc to continu
+                    $('.chat-floatwindow-input .cancel')[0].click();
+                }
+            });
         });
     },
 
@@ -187,6 +212,7 @@ chat.prototype.message = {
 
         //  press enter to submit
         $(document).keydown(function (e) {
+            e.stopPropagation();
             if (e.keyCode == 13){
                 $('#submitText')[0].click();
             }
@@ -246,7 +272,9 @@ chat.prototype.utils = {
 
                 // pass current window in callback
                 if (callback) callback(inputWindow);
-                $(inputWindow).fadeIn();
+                $(inputWindow).fadeIn(function (){
+                    $(this).find('.text')[0].focus();
+                });
             },
 
             close: function (inputWindow, callback){
