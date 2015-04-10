@@ -18,21 +18,26 @@ chat.prototype.server = {
             var localMessageList = chat.prototype.message.messageList;
             var remoteMessageList = snapshot.val();
 
-            //  sync local data to be same with remote data
-            for (x in remoteMessageList) {
-                //  if remote data not in local data
-                if (!localMessageList[x]) {
-                    console.log('Add new', localMessageList[x]);
+            if (remoteMessageList == null) {
+                //  when remote data are empty, clean the local data
+                chat.prototype.message.clearMessage();
+            } else {
+                //  sync local data to be same with remote data
+                for (x in remoteMessageList) {
+                    //  if remote data not in local data
+                    if (!localMessageList[x]) {
+                        console.log('Add new', localMessageList[x]);
 
-                    localMessageList[x] = remoteMessageList[x];
-                    // insert text to page
-                    chat.prototype.message.insertTextToChatPage(localMessageList[x], chat.prototype.message.scrollMessageListToBottom);
-                    //  save data to local
-                    chat.prototype.message.saveMessageToLocal();
+                        localMessageList[x] = remoteMessageList[x];
+                        // insert text to page
+                        chat.prototype.message.insertTextToChatPage(localMessageList[x], chat.prototype.message.scrollMessageListToBottom);
+                        //  save data to local
+                        chat.prototype.message.saveMessageToLocal();
+                    }
                 }
-            }
 
-            console.log(snapshot.val());
+                console.log(snapshot.val());
+            }
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
